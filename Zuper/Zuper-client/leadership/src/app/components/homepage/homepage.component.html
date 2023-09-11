@@ -1,0 +1,116 @@
+<div class="row">
+  <div class="col-1">
+    <app-sidenav></app-sidenav>
+  </div>
+  <div class="col-11">
+    <div *ngIf="isComponentLoading">
+      <div class="d-flex justify-content-center mt-3">
+        <mat-spinner matTooltip="Please wait..." diameter="30"> </mat-spinner>
+      </div>
+    </div>
+
+    <div *ngIf="!isComponentLoading">
+      <mat-card class="row rowDataHeader mat-elevation-z8">
+        <div class="col-2 colData">Rank</div>
+        <div class="col-2 colData">Associate Id</div>
+        <div class="col-3 colData">Name</div>
+        <div class="col-2 colData">Role</div>
+        <div class="col-2 colData">Total Points</div>
+        <mat-form-field matTooltip="Filter By Date">
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input
+              (dateChange)="getStartDate()"
+              matStartDate
+              formControlName="start"
+              placeholder=""
+            />
+            <input
+              (dateChange)="getEndDate()"
+              matEndDate
+              formControlName="end"
+              placeholder=""
+            />
+          </mat-date-range-input>
+
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </mat-card>
+      <mat-card *ngIf="addEmpFormFlag" class="activiCard" >
+        <P class="title">Select any Activity</P>
+        <p class="title">Selected Activity : {{activityParams?.activity_name ? activityParams?.activity_name : '-'}}</p>
+        <div *ngFor="let val of activityList;let k=index" style="cursor: pointer;">
+          <div class="row activityRow" (click)="selectedActivity(val,k)"   matTooltip="Click to select an Activity By Date">
+            <div class="col-6 colData">
+              {{ val.name }}
+            </div>
+            <div class="col-6 colData">
+              {{ val.points }}
+            </div>
+          </div>
+          
+        </div>
+        <div class="colData">
+          <button class="activityBtn" (click)="addDetails()">Click</button>
+        </div>
+      </mat-card>
+      <div
+        class="infinite-scroll-class"
+        infiniteScroll
+        [infiniteScrollDistance]="4"
+        [infiniteScrollThrottle]="100"
+        (scrolled)="onScrollDown()"
+        [scrollWindow]="false"
+        cdkScrollable
+      >
+        <div *ngIf="leaderBoard.length >= 0">
+          <div *ngFor="let item of leaderBoard; let i = index">
+            <mat-card
+              (click)="showDetail(item)"
+              class="row rowData"
+              matTooltip="Click to see activity breakdown"
+            >
+            <div class="col-2 colData">
+              {{i+1}}
+            </div>
+              <div class="col-2 colData">
+                {{ item.associate_id }}
+              </div>
+              <div class="col-3 colData">
+                {{ item.name }}
+              </div>
+              <div class="col-2 colData">
+                {{ item.role }}
+              </div>
+              <div class="col-2 colData">
+                {{ item.total_points }}
+              </div>
+              <div *ngIf="userData.length > 0 &&  userData[0].role_id == 1"
+                class="col-1"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  margin-left: -8px;
+                "
+              >
+                <mat-icon
+                  style="cursor: pointer; margin: 5px"
+                  (click)="addEmployeeForm(item, i, $event)"
+                  matTooltip="Click to Add an Employee Details"
+                  >add_circle_outline</mat-icon
+                >
+              </div>
+            </mat-card>
+          </div>
+        </div>
+        <div class="noDataMsg" *ngIf="leaderBoard.length == 0">
+          Data Not Found
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

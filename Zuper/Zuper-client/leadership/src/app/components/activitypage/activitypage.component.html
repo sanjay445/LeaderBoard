@@ -1,0 +1,165 @@
+<div class="row">
+  <div class="col-1">
+    <app-sidenav></app-sidenav>
+  </div>
+  <div class="col-11">
+    <div *ngIf="isComponentLoading">
+      <div class="d-flex justify-content-center mt-3">
+        <mat-spinner matTooltip="Please wait..." diameter="30"> </mat-spinner>
+      </div>
+    </div>
+
+    <div *ngIf="!isComponentLoading">
+      <mat-card class="row rowDataHeader mat-elevation-z8">
+        <div class="col-2 colData">Role Id</div>
+        <div class="col-2 colData">Name</div>
+        <div class="col-2 colData">Description</div>
+        <div class="col-2 colData">Points</div>
+        <div class="col-2 colData">IsActive</div>
+        <div class="col-2 coldata action">
+          Actions
+          <mat-icon
+            style="cursor: pointer; margin: 5px"
+            (click)="addActivityForm()"
+            matTooltip="Click to Add an Activity"
+            >add_circle_outline</mat-icon
+          >
+        </div>
+      </mat-card>
+      <mat-card *ngIf="isFormAdd" style="display: flex; justify-content: center"
+        ><form [formGroup]="activity" action="#">
+          <div class="row formFields">
+            <input
+              type="text"
+              formControlName="name"
+              placeholder="Activity Name"
+              required
+            />
+          </div>
+          <div class="row formFields">
+            <input
+              type="text"
+              formControlName="description"
+              placeholder="Description"
+              required
+            />
+          </div>
+          <div class="row formFields">
+            <input
+              type="text"
+              formControlName="points"
+              placeholder="Points"
+              required
+            />
+          </div>
+          <div class="row formFields">
+            <input
+              type="text"
+              formControlName="is_active"
+              placeholder="Is Active"
+              required
+            />
+          </div>
+          <div class="row button" (click)="onAdd()">
+            <input
+              style="border-radius: 30px; border: none"
+              type="submit"
+              value="Submit"
+            />
+          </div></form
+      ></mat-card>
+      <div
+        class="infinite-scroll-class"
+        infiniteScroll
+        [infiniteScrollDistance]="4"
+        [infiniteScrollThrottle]="100"
+        (scrolled)="onScrollDown()"
+        [scrollWindow]="false"
+        cdkScrollable
+      >
+        <div *ngIf="activityList.length >= 0">
+          <div *ngFor="let item of activityList; let i = index">
+            <mat-card class="row rowData">
+              <div class="col-2 colData">
+                {{ item.id }}
+              </div>
+              <div class="col-2 colData">
+                {{ item.name }}
+              </div>
+              <div class="col-2 colData">
+                {{ item.description }}
+              </div>
+              <div class="col-2 colData">
+                {{ item.points }}
+              </div>
+              <div class="col-2 colData">
+                {{ item.is_active }}
+              </div>
+              <div class="col-2 colData">
+                <mat-icon
+                  style="cursor: pointer; margin: 5px"
+                  (click)="editActivity(i)"
+                  matTooltip="Click to edit the Activity"
+                  >edit</mat-icon
+                >
+                <mat-icon
+                  style="cursor: pointer; margin: 5px"
+                  (click)="deleteActivity(item, i)"
+                  matTooltip="Click to detele the Activity"
+                  >remove_circle_outline</mat-icon
+                >
+              </div>
+            </mat-card>
+            <mat-card
+              *ngIf="isFormEdit && editRowIndex == i"
+              style="display: flex; justify-content: center"
+              ><form [formGroup]="activity" action="#">
+                <div class="row formFields">
+                  <input
+                    type="text"
+                    formControlName="name"
+                    placeholder="Activity Name"
+                    required
+                  />
+                </div>
+                <div class="row formFields">
+                  <input
+                    type="text"
+                    formControlName="description"
+                    placeholder="Description"
+                    required
+                  />
+                </div>
+                <div class="row formFields">
+                  <input
+                    type="text"
+                    formControlName="points"
+                    placeholder="Points"
+                    required
+                  />
+                </div>
+                <div class="row formFields">
+                  <input
+                    type="text"
+                    formControlName="is_active"
+                    placeholder="Is Active"
+                    required
+                  />
+                </div>
+                <div class="row button" (click)="onedit(item, i)">
+                  <input
+                    style="border-radius: 30px; border: none"
+                    type="submit"
+                    value="Submit"
+                  />
+                </div></form
+            ></mat-card>
+          </div>
+        </div>
+        <div class="noDataMsg" *ngIf="activityList.length == 0">
+          Data Not Found
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

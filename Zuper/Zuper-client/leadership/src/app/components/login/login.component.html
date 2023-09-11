@@ -1,0 +1,19 @@
+<div class="login">
+  <div class="container">
+    <div class="wrapper">
+      <div class="title"><span>Login Form</span></div>
+      <form [formGroup]='checkUser' action="#">
+        <div class="row">
+          <input type="text" formControlName="email" placeholder="Username" required />
+        </div>
+        <div class="row">
+          <input type="password"  formControlName="password" placeholder="Password" required />
+        </div>
+        <div class="row button" (click)="onSubmit()">
+          <input type="submit" value="Login" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

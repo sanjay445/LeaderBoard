@@ -1,0 +1,17 @@
+<div class="sidenav" *ngIf="userData.length > 0">
+  <div class="profile">
+    <mat-icon style="margin-right: 5px">account_circle</mat-icon>
+    {{ userData.length > 0 ? userData[0].employee_name : "" }}
+  </div>
+  <div class="sidenavData">
+    <p style="display: block; margin-bottom: 0px">
+      A.ID : {{ userData.length > 0 ? userData[0].associate_id : "" }}
+    </p>
+    <p style="display: block; margin-bottom: 10%">
+      {{ userData.length > 0 ? userData[0].role : "" }}
+    </p>
+    <div class="config" (click)="openConfig()" *ngIf="userData.length > 0 &&  userData[0].role_id == 1">
+      <mat-icon style="margin-right: 5px">settings</mat-icon>Config
+    </div>
+  </div>
+</div>
